@@ -40,7 +40,8 @@ class ExponentialOpTest(test.TestCase):
   def test_euler_relation(self):
     pass
 
-  def test_incorrect_dims(self):
+  def test_incorrect_dims(self):  # todo: rename to test_unsupported_shapes
+    # todo: more thorough shapes edge cases
     x = constant_op.constant([1., 2.])
     with self.assertRaisesRegex((ValueError, errors.InvalidArgumentError),
                                 r'Matrix size-incompatible'):
