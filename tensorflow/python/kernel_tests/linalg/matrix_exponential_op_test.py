@@ -26,12 +26,6 @@ def np_expm(x):
   return y
 
 
-# TODO: test behavior at different dimension scales, and also matrix norm scales
-# ref https://personales.upv.es/serblaza/2018Expm_Rev.pdf
-# 'the scaling and squaring
-# procedure is perhaps the most popular when the dimension of the corresponding
-# matrix runs well into the hundreds.'
-
 class ExponentialOpTest(test.TestCase):
 
   def test_foo(self):
@@ -40,12 +34,27 @@ class ExponentialOpTest(test.TestCase):
   def test_euler_relation(self):
     pass
 
+  def test_infinite(self):
+    x = [[np.inf, 1.], [1., 1.]]
+    result = self.evaluate(linalg_impl.matrix_exponential(x))
+    self.assertTrue(np.all(np.isnan(result)))
+
   def test_incorrect_dims(self):  # todo: rename to test_unsupported_shapes
+    # shape must be [:,...,:, M, M]
     # todo: more thorough shapes edge cases
     x = constant_op.constant([1., 2.])
     with self.assertRaisesRegex((ValueError, errors.InvalidArgumentError),
                                 r'Matrix size-incompatible'):
       linalg_impl.matrix_exponential(x)
+
+
+class MatrixExponentialBenchmark(test.Benchmark):
+  # TODO: test behavior at different dimension scales, and also matrix norm scales
+  # ref https://personales.upv.es/serblaza/2018Expm_Rev.pdf
+  # 'the scaling and squaring
+  # procedure is perhaps the most popular when the dimension of the corresponding
+  # matrix runs well into the hundreds.'
+  pass
 
 
 if __name__ == "__main__":
