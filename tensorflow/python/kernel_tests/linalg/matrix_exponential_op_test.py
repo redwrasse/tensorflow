@@ -33,6 +33,7 @@ from tensorflow.python.platform import test
 
 def np_expm(x):  # pylint: disable=invalid-name
   """Slow but accurate Taylor series matrix exponential."""
+  num_terms = 40  # FIXME: justify why use 40 terms for testing?
   y = np.zeros(x.shape, dtype=x.dtype)
   xn = np.eye(x.shape[0], dtype=x.dtype)
   for n in range(40):
